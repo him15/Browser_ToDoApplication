@@ -1,0 +1,35 @@
+body{
+    margin: 0;
+    background-color: rgb(8, 8, 71);
+}
+.input-container{
+    height: 15vh;
+    margin-left: 29vh;
+    margin-top: 3vh
+
+}
+
+.input_box{
+    font-family: 'Freckle Face', cursive;
+    height: 60%;
+    width: 50vh;
+    font-size: 1.5em;
+}
+
+.task-container{
+    height: 85vh;
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    font-family: 'Freckle Face', cursive;
+    
+}
+li{
+    list-style: none;
+    font-size: 1.5rem;
+    background-color: blue;
+    min-width: 60vh;
+    min-height: 1.5rem;
+    margin-bottom: 2vh;
+}
+
