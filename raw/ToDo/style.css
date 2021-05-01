@@ -46,6 +46,6 @@ body{
 
 @media screen and  (max-width:884px){
     .input_box{
-        width: 60vw;
+        width: 60vw; 
     }
 }
