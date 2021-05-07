@@ -71,10 +71,25 @@ plusBtn.addEventListener("click" ,createModal);
                 <div class="task_filter ${color}"></div>
                 <div class="task_desc_container">
                     <h3 class="uid">#example 1</h3>
-                    <div class="task_desc"> ${input} </div>
+                    <div class="task_desc" contenteditable="true"> ${input} </div>
                 </div>
         </div>`;
         mainContainer.appendChild(taskContainer);
+
+        let task_filter=taskContainer.querySelector(".task_filter");
+
+        task_filter.addEventListener("click" , changeColor);
+    }
+
+    function changeColor(e){
+        // current target give the current element in which the event listner is attached
+        let taskfilter=e.currentTarget;
+        let colorArr=["pink" , "aqua" , "lightgreen" , "black"];
+        let cColor = taskfilter.classList[1];
+        let idx=colorArr.indexOf(cColor);
+        let nextColIdx= (idx + 1) % 4;
+        taskfilter.classList.remove(cColor);
+        taskfilter.classList.add(colorArr[nextColIdx]);
     }
                             
                             

@@ -124,8 +124,13 @@
     margin-left: 0.3rem;
     margin-right: 0.3rem;
 }
+.task_desc_container{
+    height: 70%;
+    overflow: auto;
+}
 .uid{
     color: grey;
+    margin-left: 0.8rem;
 }
 .task_desc{
     text-align: center;
