@@ -2,6 +2,9 @@ let colorBtn=document.querySelectorAll(".filter_color");
 let mainContainer=document.querySelector(".main_container");
 let body=document.body;
 let plusBtn=document.querySelector(".fa-plus");
+let crossBtn=document.querySelector(".fa-times");
+let deleteState="false";
+
 
 let input="";
 for(let i=0;i<colorBtn.length;i++){
@@ -18,19 +21,29 @@ plusBtn.addEventListener("click" ,createModal);
 
      // create modal
     function createModal(){
-        let modal_container=document.createElement("div");
-        modal_container.setAttribute("class", "modal_container");
-        modal_container.innerHTML=` <div class="input_container" >
-        <textarea type="text" class="modal_input" placeholder="Enter the text..."></textarea>
-        </div>
-        <div class="modal_filter_container">
-                <div class="color" style="background-color:pink;"></div>
-                <div class="color" style="background-color: aqua;"></div>
-                <div class="color" style="background-color:lightgreen ;"></div>
-                <div class="color" style="background-color: black;"></div>
-                </div>`;
-            body.appendChild(modal_container);
-            handleModal(modal_container);
+        let modal_container=document.querySelector(".modal_container");
+        
+        if(modal_container == null){
+            
+            let modal_container=document.createElement("div");
+            modal_container.setAttribute("class", "modal_container");
+            modal_container.innerHTML=` <div class="input_container" >
+            <textarea type="text" class="modal_input" placeholder="Enter the text..."></textarea>
+            </div>
+            <div class="modal_filter_container">
+                    <div class="color" style="background-color:pink;"></div>
+                    <div class="color" style="background-color: aqua;"></div>
+                    <div class="color" style="background-color:lightgreen ;"></div>
+                    <div class="color" style="background-color: black;"></div>
+                    </div>`;
+                body.appendChild(modal_container);
+                handleModal(modal_container);
+        }
+
+        // if there is already modal -> blank the text area
+        let textArea=modal_container.querySelector(".modal_input");
+        textArea.value="";
+ 
 
     }
 
@@ -75,10 +88,9 @@ plusBtn.addEventListener("click" ,createModal);
                 </div>
         </div>`;
         mainContainer.appendChild(taskContainer);
-
         let task_filter=taskContainer.querySelector(".task_filter");
-
         task_filter.addEventListener("click" , changeColor);
+        taskContainer.addEventListener("click" , deleteTask)
     }
 
     function changeColor(e){
@@ -90,7 +102,29 @@ plusBtn.addEventListener("click" ,createModal);
         let nextColIdx= (idx + 1) % 4;
         taskfilter.classList.remove(cColor);
         taskfilter.classList.add(colorArr[nextColIdx]);
+
     }
                             
-                            
-                            
+      
+   // Remove the task container div from cross btn 
+    crossBtn.addEventListener("click" ,setDeleteState);
+    
+    function setDeleteState(e){
+        
+        let parent = crossBtn.parentNode;
+        if(deleteState==false){
+            parent.classList.add("active"); 
+
+        }else{
+            parent.classList.remove("active");
+        }
+        deleteState =!deleteState;
+
+    }
+
+    function deleteTask(e){
+        if(deleteState){
+            let tContainer=e.currentTarget;
+            tContainer.remove();
+        }
+    }

@@ -145,3 +145,7 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
+.active{
+    background-color: rgb(39, 38, 38);
+}
