@@ -4,6 +4,18 @@ let body=document.body;
 let plusBtn=document.querySelector(".fa-plus");
 let crossBtn=document.querySelector(".fa-times");
 let deleteState="false";
+let taskArr=[];
+
+if(localStorage.getItem("allTask")){
+    let taskArr=JSON.parse(localStorage.getItem("allTask"));
+    
+    for(let i=0;i<taskArr.length;i++){
+        let {uid , color , task }=taskArr[i];
+        addTaskContainer(task , color , false , uid);
+    }
+
+
+}
 
 
 let input="";
@@ -66,10 +78,11 @@ plusBtn.addEventListener("click" ,createModal);
         }
         let textArea=document.querySelector(".modal_input");
         textArea.addEventListener("keydown",function(event){
+            // on Enter -> task container added -> modal container disappear
             if(event.key == "Enter"){
                 input=textArea.value;
-                addTaskContainer(input , bcolor);
                 modal_container.parentElement.removeChild(modal_container);
+                addTaskContainer(input , bcolor , true);
             }
         })
     }
@@ -77,20 +90,33 @@ plusBtn.addEventListener("click" ,createModal);
 
 
     
-    function addTaskContainer(input , color){
+    function addTaskContainer(input , color , flag , id){
+        let uidFn=new ShortUniqueId(); 
+        let uid =id || uidFn();
+
+
         let taskContainer=document.createElement("div");
         taskContainer.setAttribute("class","task_container");
         taskContainer.innerHTML=`<div class="task_container">
                 <div class="task_filter ${color}"></div>
                 <div class="task_desc_container">
-                    <h3 class="uid">#example 1</h3>
+                    <h3 class="uid">${uid}</h3>
                     <div class="task_desc" contenteditable="true"> ${input} </div>
                 </div>
         </div>`;
         mainContainer.appendChild(taskContainer);
         let task_filter=taskContainer.querySelector(".task_filter");
+        
+        if(flag == true){
+            let obj={"task" : input ,"id" : uid , "color":color};
+            taskArr.push(obj);
+            let finalArr=JSON.stringify(taskArr);
+            localStorage.setItem("allTask",finalArr);    
+        }
+        
         task_filter.addEventListener("click" , changeColor);
-        taskContainer.addEventListener("click" , deleteTask)
+        taskContainer.addEventListener("click" , deleteTask);
+
     }
 
     function changeColor(e){
@@ -114,17 +140,38 @@ plusBtn.addEventListener("click" ,createModal);
         let parent = crossBtn.parentNode;
         if(deleteState==false){
             parent.classList.add("active"); 
-
+            deleteState=true;
+            
         }else{
             parent.classList.remove("active");
+            deleteState=false;
         }
-        deleteState =!deleteState;
 
     }
 
     function deleteTask(e){
-        if(deleteState){
+        if(deleteState == true){
             let tContainer=e.currentTarget;
             tContainer.remove();
+        }
+    }
+
+    function deleteTask(e){
+        let taskContainer=e.currentTarget;
+        // local storage search -> remove
+        if(deleteState){
+            let uidEle=taskContainer.querySelector(".uid");
+            let uid=uidEle.innerText;
+            // traverse in arr
+            for(let i=0;i<taskArr.length;i++){
+                let { id }=taskArr[i];
+                if(id == uid){
+                    taskArr.splice(i,1);
+                    let finalTaskArr=JSON.stringify(taskArr);
+                    localStorage.setItem("allTask" , finalTaskArr);
+                    taskContainer.remove();
+                    break;
+                }
+            }
         }
     }
